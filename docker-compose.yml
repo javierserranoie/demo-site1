@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  personal-site:
+    build: .
+    image: personal-site:latest
+    container_name: personal-site
+    restart: unless-stopped
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.personal-site.rule=Host(`jslabs.ddns.net`)"
+      - "traefik.http.routers.personal-site.entrypoints=websecure"
+      - "traefik.http.routers.personal-site.tls=true"
+      - "traefik.http.routers.personal-site.tls.certresolver=letsencrypt"
+      - "traefik.http.services.personal-site.loadbalancer.server.port=8000"
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/run
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add: []
+    stop_grace_period: 20s
+
+networks:
+  traefik-network:
+    external: true
+

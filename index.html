@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build More. Fear Less.</title>
+
+  <style>
+    :root {
+      --bg: #0d1220;
+      --fg: #e4ecff;
+      --accent: #00ffc6;
+      --accent2: #2b8fff;
+      --glass: rgba(255,255,255,0.06);
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background: radial-gradient(circle at 20% 20%, rgba(0,255,198,0.08), transparent),
+                  radial-gradient(circle at 80% 80%, rgba(43,143,255,0.07), transparent),
+                  var(--bg);
+      color: var(--fg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .card {
+      max-width: 900px;
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border-radius: 20px;
+      padding: 2.5rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.05);
+
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 2rem;
+    }
+
+    @media(max-width: 900px) {
+      .card { grid-template-columns: 1fr; }
+    }
+
+    h1 {
+      margin: 0 0 0.8rem;
+      font-size: 2.8rem;
+      letter-spacing: -1px;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      margin-bottom: 1.4rem;
+      color: #bcd2f5;
+    }
+
+    .message {
+      background: var(--glass);
+      padding: 1rem 1.2rem;
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      margin-bottom: 1.4rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    button {
+      padding: 0.75rem 1.2rem;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #08231e;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 255, 198, 0.25);
+    }
+
+    /* SVG art */
+    .art svg {
+      width: 100%;
+      max-width: 350px;
+      display: block;
+      margin: auto;
+      filter: drop-shadow(0 0 8px rgba(0, 255, 198, 0.25));
+    }
+
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #88a3c7;
+    }
+
+    /* Celebration particles */
+    .particle {
+      position: fixed;
+      font-size: 30px;
+      pointer-events: none;
+      animation: fly 1.2s ease-out forwards;
+      opacity: 0;
+    }
+    @keyframes fly {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-150px) scale(0.6); opacity: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <section>
+      <h1>Build More. Fear Less.</h1>
+      <div class="subtitle">Momentum beats perfection. Today is a great day to ship.</div>
+
+      <div class="message">“Iterate boldly. Learn quickly. Ship relentlessly.”</div>
+
+      <button onclick="celebrate()">I’m Shipping Something Today 🚀</button>
+    </section>
+
+    <aside class="art">
+      <!-- Futuristic tech SVG illustration -->
+      <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1">
+            <stop offset="0" stop-color="#00ffc6"/>
+            <stop offset="1" stop-color="#2b8fff"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Rings -->
+        <circle cx="300" cy="300" r="180" stroke="url(#g)" stroke-width="18" fill="none" opacity="0.25"/>
+        <circle cx="300" cy="300" r="140" stroke="url(#g)" stroke-width="10" fill="none" opacity="0.4"/>
+        <circle cx="300" cy="300" r="90" stroke="url(#g)" stroke-width="6" fill="none"/>
+
+        <!-- Central chip -->
+        <rect x="255" y="255" width="90" height="90" rx="12" stroke="url(#g)" stroke-width="8" fill="rgba(0,0,0,0.4)"/>
+
+        <!-- Node pulse lines -->
+        <polyline points="150,300 270,300" stroke="url(#g)" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <polyline points="330,300 450,300" stroke="url(#g)" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+        <!-- Nodes -->
+        <circle cx="150" cy="300" r="12" fill="url(#g)"/>
+        <circle cx="450" cy="300" r="12" fill="url(#g)"/>
+      </svg>
+    </aside>
+
+    <footer>
+      Served as plain static HTML <code></code>.  
+      Keep building — small steps compound.
+    </footer>
+  </main>
+
+  <script>
+    function celebrate() {
+      const symbols = ["🚀","✨","🔥","💡","🛠️"];
+      for (let i = 0; i < 25; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        p.style.left = (window.innerWidth * Math.random()) + "px";
+        p.style.top = (window.innerHeight - 20) + "px";
+        p.style.animationDuration = (0.9 + Math.random()*0.7) + "s";
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 1500);
+      }
+    }
+  </script>
+</body>
+</html>
+
