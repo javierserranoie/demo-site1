@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   personal-site:
     build: .
@@ -10,7 +8,7 @@ services:
       - traefik-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.personal-site.rule=Host(`jslabs.ddns.net`)"
+      - "traefik.http.routers.personal-site.rule=(Host(`jslabs.es`) || Host(`jslabs.eu`) || Host(`jslabs.ddns.net`))"
       - "traefik.http.routers.personal-site.entrypoints=websecure"
       - "traefik.http.routers.personal-site.tls=true"
       - "traefik.http.routers.personal-site.tls.certresolver=letsencrypt"
