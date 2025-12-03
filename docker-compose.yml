@@ -11,24 +11,40 @@ services:
       - "traefik.http.routers.personal-site.tls=true"
       - "traefik.http.routers.personal-site.tls.certresolver=letsencrypt"
       - "traefik.http.services.personal-site.loadbalancer.server.port=8000"
+      - "traefik.docker.network=traefik-network"
     read_only: true
     tmpfs:
-      - /tmp
-      - /var/run
-    security_opt:
-      - no-new-privileges:true
+      - /tmp:rw,nosuid,nodev,noexec,mode=1777
+      - /var/run:rw,nosuid,nodev,noexec,mode=0755
     cap_drop:
       - ALL
     cap_add: []
     stop_grace_period: 20s
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:8000"]
+      interval: 15s
+      timeout: 5s
+      retries: 2
+      start_period: 10s
     deploy:
       replicas: 1
       restart_policy:
-        condition: unless-stopped
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
       update_config:
         parallelism: 1
         delay: 10s
         failure_action: rollback
+        monitor: 60s
+        order: start-first
       rollback_config:
         parallelism: 1
         delay: 0s
