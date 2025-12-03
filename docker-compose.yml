@@ -2,8 +2,6 @@ services:
   personal-site:
     build: .
     image: personal-site:latest
-    container_name: personal-site
-    restart: unless-stopped
     networks:
       - traefik-network
     labels:
@@ -23,6 +21,17 @@ services:
       - ALL
     cap_add: []
     stop_grace_period: 20s
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: unless-stopped
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+      rollback_config:
+        parallelism: 1
+        delay: 0s
 
 networks:
   traefik-network:
