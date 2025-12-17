@@ -1,17 +1,18 @@
 services:
   personal-site:
-    build: .
     image: personal-site:latest
     networks:
       - traefik-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.personal-site.rule=(Host(`jslabs.es`) || Host(`jslabs.eu`) || Host(`jslabs.ddns.net`))"
+      # Router for .es domain - main site with authentik
+      - "traefik.http.routers.personal-site.rule=Host(`jslabs.es`)"
       - "traefik.http.routers.personal-site.entrypoints=websecure"
       - "traefik.http.routers.personal-site.tls=true"
       - "traefik.http.routers.personal-site.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.personal-site.priority=1"
+      - "traefik.http.routers.personal-site.middlewares=authentik@file"
       - "traefik.http.services.personal-site.loadbalancer.server.port=8000"
-      - "traefik.docker.network=traefik-network"
     read_only: true
     tmpfs:
       - /tmp:rw,nosuid,nodev,noexec,mode=1777
