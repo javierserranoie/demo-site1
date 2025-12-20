@@ -122,6 +122,7 @@ section {
 section > *:not(.article-container) {
   flex-shrink: 0;
   width: 100%;
+  text-align: center;
 }
 
 .article-container {
@@ -158,6 +159,7 @@ h1 {
   line-height: 1.1;
   margin-bottom: 0.25rem;
   text-align: center;
+  width: 100%;
 }
 
 .subtitle {
