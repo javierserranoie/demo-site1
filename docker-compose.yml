@@ -1,16 +1,18 @@
 services:
   personal-site:
     image: localhost:5000/personal-site:latest
-    hostname: personal-site
 
     networks:
       - service-network
 
     volumes:
-      - $HOME/documents:/zettel:ro
+      - zettel-data:/zettel:ro
 
     ports:
-      - "8000:8000"
+      - target: 8000
+        published: 8000
+        protocol: tcp
+        mode: ingress
 
     labels:
       - "traefik.enable=true"
@@ -74,7 +76,15 @@ services:
         parallelism: 1
         delay: 0s
 
+      placement:
+        constraints:
+          - node.role == manager
+
 networks:
   service-network:
     external: true
 
+volumes:
+  zettel-data:
+    external: true
+    name: zettel-data
