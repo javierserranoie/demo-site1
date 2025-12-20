@@ -70,6 +70,12 @@ function showSection(section) {{
   // Hide back to top button when showing section
   const backToTopBtn = document.getElementById("backToTop");
   if (backToTopBtn) backToTopBtn.classList.remove("visible");
+  
+  // Update hash to reflect section change
+  const newHash = `#/${{section}}`;
+  if (location.hash !== newHash) {{
+    location.hash = newHash;
+  }}
 }}
 
 function showPost(section, slug) {{
@@ -81,10 +87,21 @@ function showPost(section, slug) {{
     if (backToTopBtn) backToTopBtn.classList.remove("visible");
     return;
   }}
+  
+  // Check if this is the same article already displayed
+  const currentHash = location.hash;
+  const newHash = `#/${{section}}/${{slug}}`;
+  
   // Show article and hide notes index when article is selected
   postEl.style.display = "block";
   postEl.innerHTML = `<h2>${{p.title}}</h2>${{p.content}}`;
   notesEl.style.display = "none";
+  
+  // Update hash even if it's the same article (to trigger re-display)
+  if (currentHash !== newHash) {{
+    location.hash = newHash;
+  }}
+  
   // Reset scroll position when showing article (button will hide at top)
   window.scrollTo({{ top: 0, behavior: "smooth" }});
   // Button visibility will be handled by scroll listener
@@ -93,8 +110,32 @@ function showPost(section, slug) {{
 
 window.addEventListener("hashchange", () => {{
   const [, s, slug] = location.hash.split("/");
-  if (slug) showPost(s, slug);
-  else if (s) showSection(s);
+  if (slug) {{
+    showPost(s, slug);
+  }} else if (s) {{
+    showSection(s);
+  }} else {{
+    // No hash, show first section
+    if (sections.length > 0) {{
+      showSection(sections[0]);
+    }}
+  }}
+}});
+
+// Also handle clicks on note links to ensure they work even if hash doesn't change
+document.addEventListener("click", (e) => {{
+  const link = e.target.closest("#notes a");
+  if (link) {{
+    const href = link.getAttribute("href");
+    if (href && href.startsWith("#/")) {{
+      const [, s, slug] = href.split("/");
+      if (slug) {{
+        // Force show even if it's the same article
+        e.preventDefault();
+        showPost(s, slug);
+      }}
+    }}
+  }}
 }});
 
 // Back to top button functionality

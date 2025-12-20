@@ -125,24 +125,24 @@ section > *:not(.article-container) {
 }
 
 .article-container {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
   gap: 1.5rem;
   width: 100%;
   max-width: 1400px;
-  align-items: start;
+  align-items: flex-start;
+  justify-content: center;
   position: relative;
 }
 
 section article {
-  grid-column: 1;
-  width: 100%;
+  flex: 0 1 1100px;
   max-width: 1100px;
-  justify-self: center;
   overflow: visible;
 }
 
 section #backToTop {
+  flex: 0 0 auto;
+}
   grid-column: 2;
 }
 
@@ -228,6 +228,7 @@ nav button:active {
   overflow-y: auto;
   flex-shrink: 0;
   width: 100%;
+  max-width: 1400px;
 }
 
 #notes a {
