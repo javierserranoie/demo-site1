@@ -13,13 +13,14 @@ RUN apt-get update && \
     pip install markdown && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --chown=siteuser:sitegroup index.html style.css build.py app.js /app/
+RUN mkdir -p /app/site && chown siteuser:sitegroup /app/site
 
-RUN mkdir /app/site && chown siteuser:sitegroup /app/site
+COPY --chown=siteuser:sitegroup build.py /app/
+COPY --chown=siteuser:sitegroup index.html style.css /app/site/
 
 USER siteuser
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python build.py && cd site && python -m http.server 8000 --bind 0.0.0.0"]
+CMD ["sh", "-c", "python build.py && cd /app/site && python -m http.server 8000 --bind 0.0.0.0"]
 
