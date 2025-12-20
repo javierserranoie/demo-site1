@@ -2,10 +2,18 @@ from pathlib import Path
 import markdown
 import json
 import os
+import shutil
 
 ZETTEL = Path(os.getenv("PERSONAL_SITE_ZETTEL", "/zettel"))
 SITE = Path("/app/site")
 SITE.mkdir(parents=True, exist_ok=True)
+
+# Copy logo if it exists in the app directory
+logo_source = Path("/app/logo004.png")
+logo_dest = SITE / "logo004.png"
+if logo_source.exists():
+    shutil.copy(logo_source, logo_dest)
+    print(f"Copied logo to {logo_dest}")
 
 SECTIONS = {
     "00-fly": "Fleeting",
@@ -58,6 +66,7 @@ function renderSections() {{
 }}
 
 function showSection(section) {{
+  hideLanding();
   const filtered = POSTS.filter(p => p.section === section);
   notesEl.innerHTML = filtered
     .map(p => `<a href="#/${{p.section}}/${{p.slug}}">${{p.title}}</a>`)
@@ -79,6 +88,7 @@ function showSection(section) {{
 }}
 
 function showPost(section, slug) {{
+  hideLanding();
   const p = POSTS.find(p => p.section === section && p.slug === slug);
   if (!p) {{
     postEl.style.display = "none";
@@ -108,16 +118,45 @@ function showPost(section, slug) {{
 }}
 
 
+function showLanding() {{
+  const landingEl = document.getElementById("landing");
+  const notesEl = document.getElementById("notes");
+  const postEl = document.getElementById("post");
+  const navEl = document.getElementById("sections");
+  
+  if (landingEl) {{
+    landingEl.style.display = "block";
+    notesEl.style.display = "none";
+    postEl.style.display = "none";
+    navEl.style.display = "none";
+    const backToTopBtn = document.getElementById("backToTop");
+    if (backToTopBtn) backToTopBtn.classList.remove("visible");
+    window.scrollTo({{ top: 0, behavior: "smooth" }});
+  }}
+}}
+
+function hideLanding() {{
+  const landingEl = document.getElementById("landing");
+  const navEl = document.getElementById("sections");
+  if (landingEl) {{
+    landingEl.style.display = "none";
+  }}
+  if (navEl) {{
+    navEl.style.display = "flex";
+  }}
+}}
+
 window.addEventListener("hashchange", () => {{
-  const [, s, slug] = location.hash.split("/");
-  if (slug) {{
-    showPost(s, slug);
-  }} else if (s) {{
-    showSection(s);
+  const hash = location.hash;
+  if (!hash || hash === "#/" || hash === "#") {{
+    showLanding();
   }} else {{
-    // No hash, show first section
-    if (sections.length > 0) {{
-      showSection(sections[0]);
+    const [, s, slug] = hash.split("/");
+    hideLanding();
+    if (slug) {{
+      showPost(s, slug);
+    }} else if (s) {{
+      showSection(s);
     }}
   }}
 }});
@@ -150,18 +189,13 @@ function scrollToTop() {{
 function init() {{
   renderSections();
   const hash = location.hash;
-  if (hash) {{
+  if (hash && hash !== "#/" && hash !== "#") {{
     const [, s, slug] = hash.split("/");
     if (slug) showPost(s, slug);
     else if (s) showSection(s);
   }} else {{
-    // Hide article box initially, show notes
-    postEl.style.display = "none";
-    notesEl.style.display = "block";
-    // Show first section if available
-    if (sections.length > 0) {{
-      showSection(sections[0]);
-    }}
+    // Show landing page on initial load
+    showLanding();
   }}
   
   // Initialize back to top button - show when article is visible and scrolled down
@@ -181,6 +215,16 @@ function init() {{
     window.addEventListener("hashchange", updateBackToTopButton);
     // Initial check
     updateBackToTopButton();
+  }}
+  
+  // Make title link work
+  const homeLink = document.getElementById("homeLink");
+  if (homeLink) {{
+    homeLink.addEventListener("click", (e) => {{
+      e.preventDefault();
+      location.hash = "#/";
+      showLanding();
+    }});
   }}
 }}
 

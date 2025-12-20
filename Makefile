@@ -20,8 +20,13 @@ help:
 	@echo "  make push        - Push image to registry"
 	@echo "  make pull        - Pull image from registry"
 
+# Process logo (make white background transparent)
+logo:
+	@echo "Processing logo..."
+	cd $(APP_DIR) && python3 make_logo_transparent.py || echo "Logo processing skipped - ensure logo004.png exists in app/"
+
 # Build the Docker image
-build:
+build: logo
 	@echo "Building Docker image: $(FULL_IMAGE)"
 	cd $(APP_DIR) && docker build -t $(FULL_IMAGE) .
 

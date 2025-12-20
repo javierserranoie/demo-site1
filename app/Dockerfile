@@ -17,6 +17,7 @@ RUN mkdir -p /app/site && chown siteuser:sitegroup /app/site
 
 COPY --chown=siteuser:sitegroup build.py /app/
 COPY --chown=siteuser:sitegroup index.html style.css /app/site/
+COPY --chown=siteuser:sitegroup logo004.png /app/
 
 USER siteuser
 
