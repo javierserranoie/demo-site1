@@ -48,6 +48,7 @@ body {
   background: var(--bg-secondary);
   border-radius: 24px;
   padding: 2rem;
+  padding-right: 5rem;
   backdrop-filter: blur(10px);
   border: 1px solid var(--border-color);
   box-shadow: 
@@ -77,6 +78,7 @@ body {
 @media (max-width: 968px) {
   .card {
     padding: 1.5rem;
+    padding-right: 4rem;
     min-height: 95vh;
   }
   
@@ -95,13 +97,14 @@ section {
   gap: 1rem;
   width: 100%;
   max-width: 900px;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   min-height: 0;
   overflow: visible;
+  position: relative;
 }
 
-section > *:not(article) {
+section > *:not(article):not(#backToTop) {
   flex-shrink: 0;
   width: 100%;
 }
@@ -110,6 +113,13 @@ section article {
   width: 100%;
   max-width: 100%;
   overflow: visible;
+}
+
+section #backToTop {
+  position: sticky;
+  align-self: flex-end;
+  margin-left: auto;
+  margin-top: 0;
 }
 
 h1 {
@@ -215,11 +225,6 @@ nav button:active {
   color: var(--accent-orange);
   padding-left: 1.2rem;
   transform: translateX(4px);
-}
-
-.article-wrapper {
-  position: relative;
-  width: 100%;
 }
 
 article {
@@ -447,27 +452,27 @@ footer {
 
 /* Back to top button beside article */
 #backToTop {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 45px;
-  height: 45px;
+  position: sticky;
+  top: 2rem;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-dark) 100%);
   color: #2a2a2a;
   border: none;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 4px 12px var(--accent-orange-glow);
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
-  z-index: 10;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
+  flex-shrink: 0;
 }
 
 #backToTop:hover {

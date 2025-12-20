@@ -67,6 +67,9 @@ function showSection(section) {{
   postEl.innerHTML = "";
   postEl.style.display = "none";
   notesEl.style.display = "block";
+  // Hide back to top button when showing section
+  const backToTopBtn = document.getElementById("backToTop");
+  if (backToTopBtn) backToTopBtn.classList.remove("visible");
 }}
 
 function showPost(section, slug) {{
@@ -74,12 +77,17 @@ function showPost(section, slug) {{
   if (!p) {{
     postEl.style.display = "none";
     notesEl.style.display = "block";
+    const backToTopBtn = document.getElementById("backToTop");
+    if (backToTopBtn) backToTopBtn.classList.remove("visible");
     return;
   }}
   // Show article and hide notes index when article is selected
   postEl.style.display = "block";
   postEl.innerHTML = `<h2>${{p.title}}</h2>${{p.content}}`;
   notesEl.style.display = "none";
+  // Show back to top button
+  const backToTopBtn = document.getElementById("backToTop");
+  if (backToTopBtn) backToTopBtn.classList.add("visible");
   // Reset scroll position when showing article
   window.scrollTo({{ top: 0, behavior: "smooth" }});
 }}
@@ -117,17 +125,23 @@ function init() {{
     }}
   }}
   
-  // Initialize back to top button - show when scrolling down
+  // Initialize back to top button - show when article is visible and scrolling
   const backToTopBtn = document.getElementById("backToTop");
   if (backToTopBtn) {{
-    window.addEventListener("scroll", () => {{
-      // Only show button when article is visible and scrolled down
-      if (postEl.style.display === "block" && window.pageYOffset > 300) {{
+    function updateBackToTopButton() {{
+      // Show button when article is visible
+      if (postEl.style.display === "block") {{
         backToTopBtn.classList.add("visible");
       }} else {{
         backToTopBtn.classList.remove("visible");
       }}
-    }});
+    }}
+    
+    window.addEventListener("scroll", updateBackToTopButton);
+    // Also check on hash change
+    window.addEventListener("hashchange", updateBackToTopButton);
+    // Initial check
+    updateBackToTopButton();
   }}
 }}
 
