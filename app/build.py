@@ -89,26 +89,28 @@ window.addEventListener("hashchange", () => {{
   else if (s) showSection(s);
 }});
 
-// Initialize on load
-if (document.readyState === "loading") {{
-  document.addEventListener("DOMContentLoaded", () => {{
-    renderSections();
-    const hash = location.hash;
-    if (hash) {{
-      const [, s, slug] = hash.split("/");
-      if (slug) showPost(s, slug);
-      else if (s) showSection(s);
+// Back to top button functionality
+function scrollToTop() {{
+  window.scrollTo({{
+    top: 0,
+    behavior: "smooth"
+  }});
+}}
+
+// Show/hide back to top button on scroll
+const backToTopBtn = document.getElementById("backToTop");
+if (backToTopBtn) {{
+  window.addEventListener("scroll", () => {{
+    if (window.pageYOffset > 300) {{
+      backToTopBtn.classList.add("visible");
     }} else {{
-      // Hide article box initially, show notes
-      postEl.style.display = "none";
-      notesEl.style.display = "block";
-      // Show first section if available
-      if (sections.length > 0) {{
-        showSection(sections[0]);
-      }}
+      backToTopBtn.classList.remove("visible");
     }}
   }});
-}} else {{
+}}
+
+// Initialize on load
+function init() {{
   renderSections();
   const hash = location.hash;
   if (hash) {{
@@ -124,6 +126,24 @@ if (document.readyState === "loading") {{
       showSection(sections[0]);
     }}
   }}
+  
+  // Initialize back to top button
+  const backToTopBtn = document.getElementById("backToTop");
+  if (backToTopBtn) {{
+    window.addEventListener("scroll", () => {{
+      if (window.pageYOffset > 300) {{
+        backToTopBtn.classList.add("visible");
+      }} else {{
+        backToTopBtn.classList.remove("visible");
+      }}
+    }});
+  }}
+}}
+
+if (document.readyState === "loading") {{
+  document.addEventListener("DOMContentLoaded", init);
+}} else {{
+  init();
 }}
 """
 
