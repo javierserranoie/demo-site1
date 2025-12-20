@@ -63,19 +63,23 @@ function showSection(section) {{
     .map(p => `<a href="#/${{p.section}}/${{p.slug}}">${{p.title}}</a>`)
     .join("");
   
-  // Hide article box when no article is selected
+  // Hide article box and show notes index when section is selected
   postEl.innerHTML = "";
   postEl.style.display = "none";
+  notesEl.style.display = "block";
 }}
 
 function showPost(section, slug) {{
   const p = POSTS.find(p => p.section === section && p.slug === slug);
   if (!p) {{
     postEl.style.display = "none";
+    notesEl.style.display = "block";
     return;
   }}
+  // Show article and hide notes index when article is selected
   postEl.style.display = "block";
   postEl.innerHTML = `<h2>${{p.title}}</h2>${{p.content}}`;
+  notesEl.style.display = "none";
 }}
 
 function celebrate() {{
@@ -108,8 +112,9 @@ if (document.readyState === "loading") {{
       if (slug) showPost(s, slug);
       else if (s) showSection(s);
     }} else {{
-      // Hide article box initially
+      // Hide article box initially, show notes
       postEl.style.display = "none";
+      notesEl.style.display = "block";
       // Show first section if available
       if (sections.length > 0) {{
         showSection(sections[0]);
@@ -124,8 +129,9 @@ if (document.readyState === "loading") {{
     if (slug) showPost(s, slug);
     else if (s) showSection(s);
   }} else {{
-    // Hide article box initially
+    // Hide article box initially, show notes
     postEl.style.display = "none";
+    notesEl.style.display = "block";
     // Show first section if available
     if (sections.length > 0) {{
       showSection(sections[0]);
