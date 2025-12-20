@@ -1,0 +1,47 @@
+:root {
+  --bg: #0d1220;
+  --fg: #e4ecff;
+  --accent: #00ffc6;
+  --accent2: #2b8fff;
+  --glass: rgba(255,255,255,0.06);
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* ... YOUR ORIGINAL STYLES ... */
+
+nav {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+nav button {
+  background: var(--glass);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--fg);
+  padding: 0.4rem 0.8rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+}
+
+#notes a {
+  display: block;
+  padding: 0.4rem 0;
+  color: var(--accent);
+  text-decoration: none;
+  font-family: var(--font-mono);
+}
+
+#notes a:hover {
+  text-decoration: underline;
+}
+
+article {
+  margin-top: 1.5rem;
+  background: var(--glass);
+  padding: 1.5rem;
+  border-radius: 14px;
+}
+
