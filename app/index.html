@@ -15,7 +15,12 @@
 
       <nav id="sections"></nav>
       <div id="notes"></div>
-      <article id="post"></article>
+      <div class="article-wrapper">
+        <article id="post"></article>
+        <button id="backToTop" onclick="scrollToTop()" aria-label="Back to top">
+          ↑
+        </button>
+      </div>
     </section>
 
     <aside class="art">
@@ -28,10 +33,6 @@
       Keep building — small steps compound.
     </footer>
   </main>
-
-  <button id="backToTop" onclick="scrollToTop()" aria-label="Back to top">
-    ↑
-  </button>
 
   <script src="app.js"></script>
 </body>

@@ -80,6 +80,8 @@ function showPost(section, slug) {{
   postEl.style.display = "block";
   postEl.innerHTML = `<h2>${{p.title}}</h2>${{p.content}}`;
   notesEl.style.display = "none";
+  // Reset scroll position when showing article
+  window.scrollTo({{ top: 0, behavior: "smooth" }});
 }}
 
 
@@ -94,18 +96,6 @@ function scrollToTop() {{
   window.scrollTo({{
     top: 0,
     behavior: "smooth"
-  }});
-}}
-
-// Show/hide back to top button on scroll
-const backToTopBtn = document.getElementById("backToTop");
-if (backToTopBtn) {{
-  window.addEventListener("scroll", () => {{
-    if (window.pageYOffset > 300) {{
-      backToTopBtn.classList.add("visible");
-    }} else {{
-      backToTopBtn.classList.remove("visible");
-    }}
   }});
 }}
 
@@ -127,11 +117,12 @@ function init() {{
     }}
   }}
   
-  // Initialize back to top button
+  // Initialize back to top button - show when scrolling down
   const backToTopBtn = document.getElementById("backToTop");
   if (backToTopBtn) {{
     window.addEventListener("scroll", () => {{
-      if (window.pageYOffset > 300) {{
+      // Only show button when article is visible and scrolled down
+      if (postEl.style.display === "block" && window.pageYOffset > 300) {{
         backToTopBtn.classList.add("visible");
       }} else {{
         backToTopBtn.classList.remove("visible");
