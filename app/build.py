@@ -128,7 +128,8 @@ function showLanding() {{
     landingEl.style.display = "block";
     notesEl.style.display = "none";
     postEl.style.display = "none";
-    navEl.style.display = "none";
+    // Keep navigation buttons visible below landing page
+    if (navEl) navEl.style.display = "flex";
     const backToTopBtn = document.getElementById("backToTop");
     if (backToTopBtn) backToTopBtn.classList.remove("visible");
     window.scrollTo({{ top: 0, behavior: "smooth" }});
@@ -137,12 +138,8 @@ function showLanding() {{
 
 function hideLanding() {{
   const landingEl = document.getElementById("landing");
-  const navEl = document.getElementById("sections");
   if (landingEl) {{
     landingEl.style.display = "none";
-  }}
-  if (navEl) {{
-    navEl.style.display = "flex";
   }}
 }}
 
