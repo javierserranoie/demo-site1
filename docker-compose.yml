@@ -1,56 +1,88 @@
 services:
   personal-site:
-    image: personal-site:latest
+    image: localhost:5000/personal-site:latest
+
     networks:
       - service-network
+
+    volumes:
+      - type: bind
+        source: /home/js/documents
+        target: /zettel
+        read_only: true
+
+    ports:
+      - target: 8000
+        published: 8000
+        protocol: tcp
+        mode: ingress
+
     labels:
       - "traefik.enable=true"
-      # Router for .es domain - main site with authentik
+      # Main router
       - "traefik.http.routers.personal-site.rule=Host(`jslabs.es`)"
       - "traefik.http.routers.personal-site.entrypoints=websecure"
       - "traefik.http.routers.personal-site.tls=true"
       - "traefik.http.routers.personal-site.tls.certresolver=letsencrypt"
       - "traefik.http.routers.personal-site.priority=1"
+      # Auth middleware
       - "traefik.http.routers.personal-site.middlewares=authentik@file"
+      # Service port
       - "traefik.http.services.personal-site.loadbalancer.server.port=8000"
-    read_only: true
+
+    # Hardening
+    #read_only: true
+    privileged: false
+
     tmpfs:
       - /tmp:rw,nosuid,nodev,noexec,mode=1777
       - /var/run:rw,nosuid,nodev,noexec,mode=0755
+
     cap_drop:
       - ALL
+
     cap_add: []
+
     stop_grace_period: 20s
+
     healthcheck:
-      test: ["CMD-SHELL", "curl http://localhost:8000"]
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000 >/dev/null"]
       interval: 15s
       timeout: 5s
       retries: 2
       start_period: 10s
+
     deploy:
       replicas: 1
+
       restart_policy:
         condition: on-failure
         delay: 5s
         max_attempts: 3
+
       resources:
         limits:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 256M
         reservations:
-          cpus: '0.25'
+          cpus: "0.25"
           memory: 128M
+
       update_config:
         parallelism: 1
         delay: 10s
         failure_action: rollback
         monitor: 60s
         order: start-first
+
       rollback_config:
         parallelism: 1
         delay: 0s
 
+      placement:
+        constraints:
+          - node.role == manager
+
 networks:
   service-network:
     external: true
-
