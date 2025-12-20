@@ -2,7 +2,7 @@ services:
   personal-site:
     image: personal-site:latest
     networks:
-      - traefik-network
+      - service-network
     labels:
       - "traefik.enable=true"
       # Router for .es domain - main site with authentik
@@ -51,6 +51,6 @@ services:
         delay: 0s
 
 networks:
-  traefik-network:
+  service-network:
     external: true
 
