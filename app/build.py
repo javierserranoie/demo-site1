@@ -82,19 +82,6 @@ function showPost(section, slug) {{
   notesEl.style.display = "none";
 }}
 
-function celebrate() {{
-  const symbols = ["🚀","✨","🔥","💡","🛠️"];
-  for (let i = 0; i < 25; i++) {{
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-    p.style.left = (window.innerWidth * Math.random()) + "px";
-    p.style.top = (window.innerHeight - 20) + "px";
-    p.style.animationDuration = (0.9 + Math.random()*0.7) + "s";
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 1500);
-  }}
-}}
 
 window.addEventListener("hashchange", () => {{
   const [, s, slug] = location.hash.split("/");

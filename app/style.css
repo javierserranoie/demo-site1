@@ -32,20 +32,19 @@ body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding: 2rem;
   background-image: 
     radial-gradient(circle at 20% 30%, rgba(254, 240, 138, 0.04) 0%, transparent 50%),
     radial-gradient(circle at 80% 70%, rgba(254, 240, 138, 0.02) 0%, transparent 50%),
     linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  overflow-x: hidden;
 }
 
 .card {
   max-width: 1200px;
   width: 100%;
-  height: 90vh;
-  max-height: 900px;
-  min-height: 600px;
+  min-height: 90vh;
   background: var(--bg-secondary);
   border-radius: 24px;
   padding: 2rem;
@@ -57,10 +56,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1.5rem;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   margin: 0 auto;
 }
 
@@ -78,7 +77,7 @@ body {
 @media (max-width: 968px) {
   .card {
     padding: 1.5rem;
-    height: 95vh;
+    min-height: 95vh;
   }
   
   section {
@@ -98,26 +97,19 @@ section {
   max-width: 900px;
   align-items: center;
   justify-content: flex-start;
-  height: 100%;
-  overflow: hidden;
+  min-height: 0;
+  overflow: visible;
 }
 
-section > *:not(article):not(button) {
+section > *:not(article) {
   flex-shrink: 0;
   width: 100%;
-}
-
-section button {
-  flex-shrink: 0;
-  margin-top: auto;
 }
 
 section article {
-  flex: 1 1 0;
-  min-height: 0;
-  overflow-y: auto;
   width: 100%;
   max-width: 100%;
+  overflow: visible;
 }
 
 h1 {
@@ -231,13 +223,10 @@ article {
   border-radius: 12px;
   border: 1px solid var(--border-color);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  flex: 1 1 0;
-  min-height: 0;
-  max-height: 100%;
-  overflow-y: auto;
   width: 100%;
   max-width: 100%;
   display: none; /* Hidden by default, shown when article is selected */
+  overflow: visible;
 }
 
 article h2 {
