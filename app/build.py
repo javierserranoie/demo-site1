@@ -21,19 +21,7 @@ def convert_markdown(text):
     md = markdown.Markdown(extensions=["fenced_code", "tables"])
     return md.convert(text)
 
-# README → home
-readme = ZETTEL / "README.md"
-if readme.exists():
-    try:
-        posts.append({
-            "section": "home",
-            "label": "Home",
-            "slug": "home",
-            "title": "Home",
-            "content": convert_markdown(readme.read_text(encoding="utf-8"))
-        })
-    except Exception as e:
-        print(f"Warning: Failed to process {readme}: {e}")
+# Home section removed - no longer needed
 
 for folder, label in SECTIONS.items():
     d = ZETTEL / folder
@@ -70,27 +58,23 @@ function renderSections() {{
 }}
 
 function showSection(section) {{
-  const filtered = POSTS.filter(p => p.section === section && p.slug !== "home");
+  const filtered = POSTS.filter(p => p.section === section);
   notesEl.innerHTML = filtered
     .map(p => `<a href="#/${{p.section}}/${{p.slug}}">${{p.title}}</a>`)
     .join("");
   
-  // If home section, show the home post content
-  if (section === "home") {{
-    const homePost = POSTS.find(p => p.section === "home" && p.slug === "home");
-    if (homePost) {{
-      postEl.innerHTML = `<h2>${{homePost.title}}</h2>${{homePost.content}}`;
-    }} else {{
-      postEl.innerHTML = "";
-    }}
-  }} else {{
-    postEl.innerHTML = "";
-  }}
+  // Hide article box when no article is selected
+  postEl.innerHTML = "";
+  postEl.style.display = "none";
 }}
 
 function showPost(section, slug) {{
   const p = POSTS.find(p => p.section === section && p.slug === slug);
-  if (!p) return;
+  if (!p) {{
+    postEl.style.display = "none";
+    return;
+  }}
+  postEl.style.display = "block";
   postEl.innerHTML = `<h2>${{p.title}}</h2>${{p.content}}`;
 }}
 
@@ -124,7 +108,12 @@ if (document.readyState === "loading") {{
       if (slug) showPost(s, slug);
       else if (s) showSection(s);
     }} else {{
-      showSection("home");
+      // Hide article box initially
+      postEl.style.display = "none";
+      // Show first section if available
+      if (sections.length > 0) {{
+        showSection(sections[0]);
+      }}
     }}
   }});
 }} else {{
@@ -135,7 +124,12 @@ if (document.readyState === "loading") {{
     if (slug) showPost(s, slug);
     else if (s) showSection(s);
   }} else {{
-    showSection("home");
+    // Hide article box initially
+    postEl.style.display = "none";
+    // Show first section if available
+    if (sections.length > 0) {{
+      showSection(sections[0]);
+    }}
   }}
 }}
 """

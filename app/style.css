@@ -227,6 +227,7 @@ article {
   min-height: 0;
   overflow-y: auto;
   height: 100%;
+  display: none; /* Hidden by default, shown when article is selected */
 }
 
 article h2 {
