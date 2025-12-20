@@ -3,7 +3,7 @@ services:
     image: localhost:5000/personal-site:latest
 
     networks:
-      - service-network
+      - traefik-network
 
     volumes:
       - type: bind
@@ -26,7 +26,7 @@ services:
       - "traefik.http.routers.personal-site.tls.certresolver=letsencrypt"
       - "traefik.http.routers.personal-site.priority=1"
       # Auth middleware
-      - "traefik.http.routers.personal-site.middlewares=authentik@file"
+      #- "traefik.http.routers.personal-site.middlewares=authentik@file"
       # Service port
       - "traefik.http.services.personal-site.loadbalancer.server.port=8000"
 
@@ -84,5 +84,5 @@ services:
           - node.role == manager
 
 networks:
-  service-network:
+  traefik-network:
     external: true
