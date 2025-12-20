@@ -6,7 +6,10 @@ services:
       - service-network
 
     volumes:
-      - zettel-data:/zettel:ro
+      - type: bind
+        source: /home/js/documents
+        target: /zettel
+        read_only: true
 
     ports:
       - target: 8000
@@ -83,8 +86,3 @@ services:
 networks:
   service-network:
     external: true
-
-volumes:
-  zettel-data:
-    external: true
-    name: zettel-data
